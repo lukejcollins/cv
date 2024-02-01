@@ -1,0 +1,46 @@
+name: Build CV
+on:
+  push:
+    branches: [main]
+jobs:
+  build_typst_pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install fonts
+        env:
+          GH_TOKEN: ${{ github.token }} # Required by gh in GitHub Actions
+        run: |
+          # Install required fonts and pdftoppm
+          sudo apt-get update
+          sudo apt-get install fonts-firacode poppler-utils --fix-missing
+          # Fira Sans doesn't exist in the Ubuntu repos
+          gh release download --repo mozilla/Fira --archive zip --output FiraSans.zip
+          # FontAwesome is missing one glyph for some reason when installed with apt-get
+          gh release download --repo FortAwesome/Font-Awesome --archive zip --output FontAwesome.zip
+          unzip FontAwesome.zip -d /usr/share/fonts/font_awesome/
+          unzip FiraSans.zip -d /usr/share/fonts/fira_sans/
+          fc-cache -fv
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - uses: Jarivanbakel/typst-action@v3
+        with:
+          input_files: |
+            english.typ
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: English PDF
+          path: |
+            english.pdf
+      - name: Generate thumbnails
+        run: |
+          pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
+      - name: Publish release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            english.pdf
+            english-thumbnail.png
+          tag_name: latest
+          draft: false
+          prerelease: false
