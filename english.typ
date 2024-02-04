@@ -5,11 +5,11 @@
   name: "Luke Collins",
   links: (
     (link: "mailto:luke@lukecollins.dev", icon: fa-at()),
-    (link: "https://github.com/lukejcollins", display: " lukejcollins", icon: fa-github()),
-    (link: "https://www.linkedin.com/in/luke-j-collins/", display: " Luke Collins", icon: fa-linkedin()),
+    (link: "https://github.com/lukejcollins", display: "lukejcollins", icon: fa-github()),
+    (link: "https://www.linkedin.com/in/luke-j-collins/", display: "Luke Collins", icon: fa-linkedin()),
   ),
   occupation: "Senior Process Improvement Specialist",
-  tagline: [Solving problems for Enterprise IT teams. Check my Github #link("https://github.com/lukejcollins/lukejcollins", "here").],
+  tagline: [Solving problems for IT teams. Check out my Github #link("https://github.com/lukejcollins/lukejcollins", "here").],
   left_column: [
     == Work Experience
 
