@@ -21,7 +21,7 @@
 
     #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2019 --- 2021][Bristol, UK]
 
-    In my role as a Process Improvement Specialist, I played a hands-on part in advancing IT processes, focusing on streamlining operations and bolstering system stability.
+    In my role as a Process Improvement Specialist, I played a hands-on part in advancing IT processes, focusing on streamlining operations and bolstering system stability in our end-user focused tech function.
  
     My work involved direct involvement in coding, refining deployment practices, and automating routine tasks. I contributed to enhancing team agility and system uptime, employing a meticulous approach to troubleshoot and optimise IT infrastructure.
 
