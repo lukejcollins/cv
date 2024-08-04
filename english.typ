@@ -21,7 +21,9 @@
 
     #experience("images/ovoenergy.png")[IT Support Engineer][OVO Energy][2019 --- 2021][Bristol, UK]
 
-    As an IT Support Engineer, I ensured system uptime and quick issue resolution through first/second line support, proactive monitoring, and troubleshooting. I advanced automation for better efficiency and laid the foundation for resilient operations.
+    In my role as a Process Improvement Specialist, I played a hands-on part in advancing IT processes, focusing on streamlining operations and bolstering system stability.
+ 
+    My work involved direct involvement in coding, refining deployment practices, and automating routine tasks. I contributed to enhancing team agility and system uptime, employing a meticulous approach to troubleshoot and optimise IT infrastructure.
 
     #experience("images/ovoenergy.png")[Senior Customer Service Specialist][OVO Energy][2017 --- 2019][Bristol, UK]
 
