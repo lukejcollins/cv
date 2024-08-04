@@ -19,15 +19,17 @@
 
     My remit involves orchestrating cross-disciplinary collaboration to devise innovative solutions that underpin robust, adaptable infrastructures, ensuring an uninterrupted continuum of operational excellence and system reliability.
 
-    #experience("images/ovoenergy.png")[IT Support Engineer][OVO Energy][2019 --- 2021][Bristol, UK]
+    #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2019 --- 2021][Bristol, UK]
 
     In my role as a Process Improvement Specialist, I played a hands-on part in advancing IT processes, focusing on streamlining operations and bolstering system stability.
  
     My work involved direct involvement in coding, refining deployment practices, and automating routine tasks. I contributed to enhancing team agility and system uptime, employing a meticulous approach to troubleshoot and optimise IT infrastructure.
 
-    #experience("images/ovoenergy.png")[Senior Customer Service Specialist][OVO Energy][2017 --- 2019][Bristol, UK]
+    #experience("images/ovoenergy.png")[IT Support Engineer][OVO Energy][2017 --- 2019][Bristol, UK]
 
-    As a Senior Customer Service Specialist, I excelled in energy billing support, boosting customer trust and satisfaction. Skilled in system analysis and query resolution, I enhanced service reliability. Led data and process optimisation, improving system efficiency.
+    As an IT Support Engineer, I provided first and second line support, ensuring system availability and swift resolution of technical issues. My role involved proactive monitoring, troubleshooting, and refining incident management processes.
+
+    I contributed to the development and implementation of automation tools for more efficient problem-solving, laying the groundwork for improved operational practices and system resilience.
 
     == Education
 
