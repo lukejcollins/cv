@@ -76,7 +76,7 @@
 
     == Other Merits
 
-    - #link("https://www.credly.com/badges/ec64ee0a-4b8a-40b7-8f00-af56351ed35b?source=linked_in_profile", "AWS Solutions Architect Associate")
+    - #link("https://www.credly.com/badges/6b251816-89ab-4b48-aa66-3c2debc47b32/public_url", "AWS Solutions Architect Professional")
     - #link("https://www.credly.com/badges/6a0580b0-bb06-45fd-b60f-f831a75fa24c/public_url", "AWS Developer Associate")
     - #link("https://www.credly.com/badges/604c2a30-8ea2-4327-8eb0-1b2a888793f6/public_url", "AWS SysOps Administrator Assosicate")
   ],
