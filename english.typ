@@ -13,19 +13,19 @@
   left_column: [
     == Work Experience
 
-    #experience("images/ovoenergy.png")[Senior Solutions Engineer][OVO Energy][2021 --- present][Bristol, UK]
+    #experience("images/ovoenergy.png")[Senior Solutions Engineer][OVO Energy][2022 --- present][Bristol, UK]
 
     In my role as Senior Solutions Engineer with OVO, I champion the development and implementation of advanced IT solutions that elevate business processes and infrastructure. Building on my expertise in automation and systems integration, I architect resilient and efficient systems tailored to enable scalable and fault-tolerant IT frameworks. 
 
     My remit involves orchestrating cross-disciplinary collaboration to devise innovative solutions that underpin robust, adaptable infrastructures, ensuring an uninterrupted continuum of operational excellence and system reliability.
 
-    #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2019 --- 2021][Bristol, UK]
+    #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2021 --- 2022][Bristol, UK]
 
     In my role as a Process Improvement Specialist, I played a hands-on part in advancing IT processes, focusing on streamlining operations and bolstering system stability in our end-user focused tech function.
  
     My work involved direct involvement in coding, refining deployment practices, and automating routine tasks. I contributed to enhancing team agility and system uptime, employing a meticulous approach to troubleshoot and optimise IT infrastructure.
 
-    #experience("images/ovoenergy.png")[IT Support Engineer][OVO Energy][2017 --- 2019][Bristol, UK]
+    #experience("images/ovoenergy.png")[IT Support Engineer][OVO Energy][2019 --- 2021][Bristol, UK]
 
     As an IT Support Engineer, I provided first and second line support, ensuring system availability and swift resolution of technical issues. My role involved proactive monitoring, troubleshooting, and refining incident management processes.
 
