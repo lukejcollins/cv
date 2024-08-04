@@ -8,22 +8,16 @@
     (link: "https://github.com/lukejcollins", display: "lukejcollins", icon: fa-github()),
     (link: "https://www.linkedin.com/in/luke-j-collins/", display: "Luke Collins", icon: fa-linkedin()),
   ),
-  occupation: "Senior Process Improvement Specialist",
+  occupation: "Senior Solutions Engineer",
   tagline: [Solving problems for IT teams. Check out my Github #link("https://github.com/lukejcollins/lukejcollins", "here").],
   left_column: [
     == Work Experience
 
-    #experience("images/ovoenergy.png")[Senior Process Improvement Specialist][OVO Energy][2022 --- present][Bristol, UK]
+    #experience("images/ovoenergy.png")[Senior Solutions Engineer][OVO Energy][2021 --- present][Bristol, UK]
 
-    As a seasoned leader in enterprise IT process improvement, I spearhead a team dedicated to refining system efficiency and robustness. Leveraging a deep understanding of automation, continuous integration, and operational resilience, I enhance workflows and system reliability.
+    In my role as Senior Solutions Engineer with OVO, I champion the development and implementation of advanced IT solutions that elevate business processes and infrastructure. Building on my expertise in automation and systems integration, I architect resilient and efficient systems tailored to enable scalable and fault-tolerant IT frameworks. 
 
-    My approach fosters cross-disciplinary collaboration and innovative solutions, ensuring scalable and fault-tolerant IT environments.
-
-    #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2021 --- 2022][Bristol, UK]
-
-    In my role as a Process Improvement Specialist, I played a hands-on part in advancing IT processes, focusing on streamlining operations and bolstering system stability.
-    
-    My work involved direct involvement in coding, refining deployment practices, and automating routine tasks. I contributed to enhancing team agility and system uptime, employing a meticulous approach to troubleshoot and optimise IT infrastructure.
+    My remit involves orchestrating cross-disciplinary collaboration to devise innovative solutions that underpin robust, adaptable infrastructures, ensuring an uninterrupted continuum of operational excellence and system reliability.
 
     #experience("images/ovoenergy.png")[IT Support Engineer][OVO Energy][2019 --- 2021][Bristol, UK]
 
