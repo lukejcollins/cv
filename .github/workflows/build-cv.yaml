@@ -14,30 +14,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install base fonts and tools
+      - name: Install base tools and fonts
         run: |
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            fonts-firacode fonts-dejavu fontconfig poppler-utils unzip jq
+            git fontconfig unzip poppler-utils
+          # Optional extras
+          sudo apt-get install -y --no-install-recommends \
+            fonts-firacode fonts-dejavu || true
           sudo fc-cache -f
 
-      - name: Install Fira Sans from Mozilla release
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Install Fira Sans from source repo
         run: |
           set -euxo pipefail
-          # Get the first zip asset that contains Fira Sans from latest release
-          ASSET_JSON="$(gh release view --repo mozilla/Fira --json assets)"
-          URL="$(echo "$ASSET_JSON" \
-            | jq -r '.assets[] | select((.name|test("(?i)fira[_-]?sans.*\\.zip$")))
-                     | .url' | head -n1)"
-          test -n "$URL"
-          gh release download --repo mozilla/Fira --pattern "*Fira*Sans*.zip" \
-            --output /tmp/FiraSans.zip --clobber
+          git clone --depth=1 https://github.com/bBoxType/FiraSans.git /tmp/FiraSans
           sudo mkdir -p /usr/local/share/fonts/fira
-          unzip -q /tmp/FiraSans.zip -d /tmp/fira
-          sudo find /tmp/fira -type f -iregex '.*\.(ttf|otf)$' \
+          sudo find /tmp/FiraSans/Fira_Sans_4_3/Fonts \
+            -type f -iregex '.*FiraSans.*\\.(ttf|otf)$' \
             -exec cp -n {} /usr/local/share/fonts/fira/ \;
           sudo fc-cache -f
           fc-list | grep -i 'fira' | head -n 30 || true
