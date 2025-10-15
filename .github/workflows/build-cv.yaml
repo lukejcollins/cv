@@ -11,24 +11,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }} # Required by gh in GitHub Actions
         run: |
-          # Install required fonts and pdftoppm (fast path on Ubuntu)
+          # Install required tools and fonts available via apt
           sudo apt-get update -y
-          sudo apt-get install -y --no-install-recommends \
-            fonts-firacode \
-            fonts-noto-core \
-            fonts-noto-color-emoji \
-            fonts-dejavu \
-            poppler-utils
-          # Copy fonts into workspace so container action can see them
-          # Vendor font files directly into a flat directory Typst can scan
+          sudo apt-get install -y --no-install-recommends fonts-firacode poppler-utils unzip
+          # Vendor fonts into workspace for the containerized Typst action
           mkdir -p .fonts
-          find /usr/share/fonts -type f \( -iname "*.ttf" -o -iname "*.otf" \) -exec cp -n {} .fonts/ \; || true
-      - name: List vendored fonts (debug)
-        run: |
-          echo "Vendored fonts count: $(ls -1 .fonts | wc -l)"
-          ls -1 .fonts | head -n 20 || true
+          # Copy Fira Code from system to vendored folder
+          cp -n /usr/share/fonts/truetype/firacode/*.ttf .fonts/ 2>/dev/null || true
+          # Download and vendor Fira Sans from upstream releases
+          gh release download --repo mozilla/Fira --archive zip --output FiraSans.zip
+          mkdir -p _fira
+          unzip -q FiraSans.zip -d _fira
+          find _fira -type f -iname "*FiraSans*.ttf" -exec cp -n {} .fonts/ \;
+          # Optionally add DejaVu fallbacks
+          cp -n /usr/share/fonts/truetype/dejavu/*.ttf .fonts/ 2>/dev/null || true
+          # Show a few vendored fonts for debugging
+          echo "Vendored fonts (sample):"
+          ls -1 .fonts | grep -Ei "fira|dejavu" | head -n 20 || true
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Debug Typst font discovery
+        uses: docker://ghcr.io/typst/typst:latest
+        env:
+          TYPST_FONT_PATHS: /github/workspace/.fonts:./.fonts
+        with:
+          args: fonts
       - uses: lvignoli/typst-action@main
         with:
           source_file: |

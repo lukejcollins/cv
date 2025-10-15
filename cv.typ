@@ -4,8 +4,8 @@
 #let secondary_color = rgb("#677fb2") // lighter blue
 #let gray_color = rgb("#7c7c7c") // light gray
 
-#let sans_serif_font = "DejaVu Sans"
-#let code_font = "DejaVu Sans Mono"
+#let sans_serif_font = "Fira Sans"
+#let code_font = "Fira Code"
 
 #let contact_info(services) = {
   let glyph(icon) = {
