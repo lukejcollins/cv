@@ -61,7 +61,7 @@
     Completed a TEFL Certificate in Phuket, enhancing communication, teaching,
     and adaptability skills in diverse environments.
 
-    #v(7pt)
+    #v(8pt)
 
     == Interests
 
