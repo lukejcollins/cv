@@ -75,7 +75,7 @@
         set align(right + bottom)
         set text(right_text_font_size, weight: "light")
 
-        period; h(3pt); text(size: 10pt, fill: secondary_color, "•")
+        period; h(3pt); text(size: 10pt, "📅")
       },
       {
         v(row_spacing)
@@ -86,7 +86,7 @@
         set align(right)
 
         v(row_spacing)
-        location; h(3pt); text(size: 10pt, fill: secondary_color, "•")
+        location; h(3pt); text(size: 10pt, "📍")
       },
     )
   )
@@ -141,7 +141,7 @@
   #show link: body => underline(text(body, fill: secondary_color, weight: "bold"))
 
   #line(length: 100%, stroke: 0.5pt + gray_color)
-  #text(size: 10pt, fill: secondary_color, ">") #content
+  #text(size: 10pt, fill: secondary_color, "›") #content
 ]
 
 #let programming_skills(header, languages_header, other_technologies_header) = {

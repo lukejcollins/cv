@@ -14,77 +14,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: System info
-        run: |
-          set -euxo pipefail
-          uname -a
-          lsb_release -a || true
-
-      - name: Install base tools and fonts
+      - name: Install tools and fonts
         run: |
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            git fontconfig unzip curl poppler-utils \
+            git fontconfig unzip poppler-utils \
             fonts-firacode fonts-dejavu
-          sudo fc-cache -f
-
-      - name: Install Fira Sans (clone and copy all TTF/OTF)
-        run: |
-          set -euxo pipefail
-          rm -rf /tmp/FiraSans
-          git clone --depth=1 https://github.com/bBoxType/FiraSans.git \
-            /tmp/FiraSans
+          git clone --depth=1 https://github.com/bBoxType/FiraSans.git /tmp/FiraSans
           sudo mkdir -p /usr/local/share/fonts/fira
           sudo find /tmp/FiraSans -type f \
             \( -iname "*.ttf" -o -iname "*.otf" \) \
             -exec cp -n {} /usr/local/share/fonts/fira/ \;
           sudo fc-cache -f
-          fc-match "Fira Sans" || true
-          fc-match "Fira Code" || true
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
 
-      - name: Typst version and fonts snapshot
-        run: |
-          set -euxo pipefail
-          typst --version
-          typst fonts | sed -n '1,200p' > typst-fonts.txt
-          grep -Eiq '^fira (sans|code)' typst-fonts.txt || \
-            (echo "Typst cannot see Fira fonts" && exit 1)
-
-      - name: Create tiny font test (fixed)
-        run: |
-          set -euxo pipefail
-          cat > font-test.typ <<'EOF'
-          #set page(width: 400pt, height: 200pt)
-          #set text(size: 16pt)
-          #set text(font: "Fira Sans")
-          = Fira check
-          The quick brown fox
-          #set text(font: "Fira Code")
-          let x = 42
-          EOF
-          typst compile font-test.typ font-test.pdf
-          pdfinfo font-test.pdf || true
-
       - name: Compile CV
         run: |
           set -euxo pipefail
-          test -f english.typ
           typst compile english.typ english.pdf
-          pdfinfo english.pdf || true
-
-      - name: Upload debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-${{ github.run_number }}
-          path: |
-            typst-fonts.txt
-            font-test.typ
-            font-test.pdf
 
       - name: Upload PDF (PR or push)
         uses: actions/upload-artifact@v4
