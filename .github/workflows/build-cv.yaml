@@ -19,30 +19,30 @@ jobs:
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            fonts-firacode fonts-dejavu poppler-utils unzip fontconfig
+            fonts-firacode fonts-dejavu poppler-utils unzip fontconfig curl
           sudo fc-cache -f
 
-      - name: Install Fira Sans (upstream)
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Install Fira Sans (Google Fonts)
         run: |
           set -euxo pipefail
-          gh release download --repo mozilla/Fira --archive zip \
-            --output FiraSans.zip
-          sudo mkdir -p /usr/share/fonts/truetype/fira
-          unzip -q FiraSans.zip -d /tmp/fira
-          sudo find /tmp/fira -type f -iregex ".*Fira.*\\.(ttf|otf)$" \
-            -exec cp -n {} /usr/share/fonts/truetype/fira/ \;
+          sudo mkdir -p /usr/local/share/fonts/fira
+          curl -L \
+            "https://fonts.google.com/download?family=Fira%20Sans" \
+            -o /tmp/FiraSans.zip
+          unzip -q /tmp/FiraSans.zip -d /tmp/fira
+          sudo find /tmp/fira -type f -iname "*.ttf" \
+            -exec cp -n {} /usr/local/share/fonts/fira/ \;
           sudo fc-cache -f
-          fc-list | grep -qi "Fira Sans" || {
-            echo "Fira Sans not found in system cache"; exit 1; }
+          echo "Installed Fira fonts:"
+          fc-list | grep -i "fira" | head -n 20 || true
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
 
       - name: Verify font discovery
         run: |
-          typst fonts | grep -Eiq "^fira (sans|code)" || {
+          set -euxo pipefail
+          typst fonts | grep -Eiq "^fira( |$)" || {
             echo "Typst cannot see Fira fonts"; exit 1; }
 
       - name: Compile CV
