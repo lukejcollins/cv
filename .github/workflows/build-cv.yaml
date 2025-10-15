@@ -14,23 +14,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install system fonts
+      - name: Install base fonts and tools
         run: |
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            fonts-fira-sans fonts-firacode fonts-dejavu \
-            fontconfig poppler-utils unzip
+            fonts-firacode fonts-dejavu fontconfig poppler-utils unzip jq
           sudo fc-cache -f
-          fc-list | grep -Ei "fira|dejavu" | head -n 30 || true
+
+      - name: Install Fira Sans from Mozilla release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          # Get the first zip asset that contains Fira Sans from latest release
+          ASSET_JSON="$(gh release view --repo mozilla/Fira --json assets)"
+          URL="$(echo "$ASSET_JSON" \
+            | jq -r '.assets[] | select((.name|test("(?i)fira[_-]?sans.*\\.zip$")))
+                     | .url' | head -n1)"
+          test -n "$URL"
+          gh release download --repo mozilla/Fira --pattern "*Fira*Sans*.zip" \
+            --output /tmp/FiraSans.zip --clobber
+          sudo mkdir -p /usr/local/share/fonts/fira
+          unzip -q /tmp/FiraSans.zip -d /tmp/fira
+          sudo find /tmp/fira -type f -iregex '.*\.(ttf|otf)$' \
+            -exec cp -n {} /usr/local/share/fonts/fira/ \;
+          sudo fc-cache -f
+          fc-list | grep -i 'fira' | head -n 30 || true
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
 
-      - name: Verify font discovery
+      - name: Verify Typst sees Fira
         run: |
           set -euxo pipefail
-          typst fonts | grep -Eiq "^fira (sans|code)" || {
+          typst fonts | grep -Eiq '^fira (sans|code)' || {
             echo "Typst cannot see Fira fonts"; exit 1; }
 
       - name: Compile CV
