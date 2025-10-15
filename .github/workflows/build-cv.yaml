@@ -30,7 +30,7 @@ jobs:
       - uses: lvignoli/typst-action@main
         with:
           source_file: english.typ
-          options: --font-path ./.fonts
+          args: --font-path ./.fonts
         env:
           TYPST_FONT_PATH: ./.fonts
       - name: Upload PDF file
