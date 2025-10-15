@@ -9,8 +9,8 @@
 
 #let contact_info(services) = {
   let glyph(icon) = {
-    // Use emoji-capable fallback resolution
-    box(baseline: 2.5pt, height: 11pt, text(font: sans_serif_font, fallback: true, icon, size: 10pt))
+    // Render icons with an emoji-capable font explicitly
+    box(baseline: 2.5pt, height: 11pt, text(font: "Noto Color Emoji", fallback: true, icon, size: 10pt))
     h(3pt)
   }
 
@@ -76,7 +76,7 @@
         set align(right + bottom)
         set text(right_text_font_size, weight: "light")
 
-        period; h(3pt); text(size: 10pt, fill: secondary_color, "📅")
+        period; h(3pt); text(size: 10pt, font: "Noto Color Emoji", "📅")
       },
       {
         v(row_spacing)
@@ -87,7 +87,7 @@
         set align(right)
 
         v(row_spacing)
-        location; h(3pt); text(size: 10pt, fill: secondary_color, "📍")
+        location; h(3pt); text(size: 10pt, font: "Noto Color Emoji", "📍")
       },
     )
   )
