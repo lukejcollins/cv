@@ -22,9 +22,11 @@ jobs:
           gh release download --repo mozilla/Fira --archive zip --output FiraSans.zip
           mkdir -p _fira
           unzip -q FiraSans.zip -d _fira
-          find _fira -type f -iname "*FiraSans*.ttf" -exec cp -n {} .fonts/ \;
-          # Optionally add DejaVu fallbacks
+          # Copy both TTF and OTF variants of Fira Sans
+          find _fira -type f -iregex ".*FiraSans.*\\.(ttf|otf)$" -exec cp -n {} .fonts/ \;
+          # Add DejaVu fallbacks
           cp -n /usr/share/fonts/truetype/dejavu/*.ttf .fonts/ 2>/dev/null || true
+          cp -n /usr/share/fonts/truetype/dejavu/*.otf .fonts/ 2>/dev/null || true
           # Show a few vendored fonts for debugging
           echo "Vendored fonts (sample):"
           ls -1 .fonts | grep -Ei "fira|dejavu" | head -n 20 || true
