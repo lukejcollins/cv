@@ -19,13 +19,19 @@ jobs:
             fonts-noto-color-emoji \
             fonts-dejavu \
             poppler-utils
-          # Refresh font cache (quiet)
-          fc-cache -f
+          # Copy fonts into workspace so container action can see them
+          mkdir -p .fonts/noto .fonts/dejavu .fonts/firacode
+          cp -r /usr/share/fonts/truetype/noto/* .fonts/noto/ 2>/dev/null || true
+          cp -r /usr/share/fonts/opentype/noto/* .fonts/noto/ 2>/dev/null || true
+          cp -r /usr/share/fonts/truetype/dejavu/* .fonts/dejavu/ 2>/dev/null || true
+          cp -r /usr/share/fonts/truetype/firacode/* .fonts/firacode/ 2>/dev/null || true
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: lvignoli/typst-action@main
         with:
           source_file: english.typ
+        env:
+          TYPST_FONT_PATH: ./.fonts
       - name: Upload PDF file
         uses: actions/upload-artifact@v4
         with:

@@ -9,8 +9,8 @@
 
 #let contact_info(services) = {
   let glyph(icon) = {
-    // Force emoji-supporting font for icons to avoid missing glyphs
-    box(baseline: 2.5pt, height: 11pt, text(font: sans_serif_font, fallback: ("Noto Color Emoji", "DejaVu Sans"), icon, size: 10pt))
+    // Use emoji-capable fallback resolution
+    box(baseline: 2.5pt, height: 11pt, text(font: sans_serif_font, fallback: true, icon, size: 10pt))
     h(3pt)
   }
 
@@ -193,7 +193,7 @@
   right_column: [],
   footer_content: []
 ) = {
-  set text(9.8pt, font: sans_serif_font, fallback: ("Noto Color Emoji", "Noto Sans Symbols", "DejaVu Sans"))
+  set text(9.8pt, font: sans_serif_font, fallback: true)
   set page(margin: (x: 32pt, y: 35pt), footer: footer(footer_content))
   set par(justify: true)
 
