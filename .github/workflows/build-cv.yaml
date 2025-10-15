@@ -11,23 +11,22 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }} # Required by gh in GitHub Actions
         run: |
-          # Install required fonts and pdftoppm
-          sudo apt-get update
-          sudo apt-get install fonts-firacode poppler-utils --fix-missing
-          # Fira Sans doesn't exist in the Ubuntu repos
-          gh release download --repo mozilla/Fira --archive zip --output FiraSans.zip
-          # FontAwesome is missing one glyph for some reason when installed with apt-get
-          gh release download --repo FortAwesome/Font-Awesome --archive zip --output FontAwesome.zip
-          unzip FontAwesome.zip -d /usr/share/fonts/font_awesome/
-          unzip FiraSans.zip -d /usr/share/fonts/fira_sans/
-          fc-cache -fv
+          # Install required fonts and pdftoppm (fast path on Ubuntu)
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends \
+            fonts-firacode \
+            fonts-fira-sans \
+            fonts-noto-color-emoji \
+            fonts-dejavu \
+            poppler-utils
+          # Refresh font cache (quiet)
+          fc-cache -f
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: lvignoli/typst-action@main
         with:
           source_file: english.typ
       - name: Upload PDF file
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: English PDF
