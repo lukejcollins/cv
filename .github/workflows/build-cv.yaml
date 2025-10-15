@@ -19,8 +19,6 @@ jobs:
           set -euxo pipefail
           uname -a
           lsb_release -a || true
-          printenv | sort | sed -n '1,200p' > env.txt
-          cat env.txt
 
       - name: Install base tools and fonts
         run: |
@@ -29,8 +27,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             git fontconfig unzip curl poppler-utils \
             fonts-firacode fonts-dejavu
-          fc-cache -f
-          fc-list | head -n 50 || true
+          sudo fc-cache -f
 
       - name: Install Fira Sans (clone and copy all TTF/OTF)
         run: |
@@ -39,22 +36,12 @@ jobs:
           git clone --depth=1 https://github.com/bBoxType/FiraSans.git \
             /tmp/FiraSans
           sudo mkdir -p /usr/local/share/fonts/fira
-          sudo find /usr/local/share/fonts/fira -maxdepth 1 -type f -printf '%f\n' \
-            || true
           sudo find /tmp/FiraSans -type f \
             \( -iname "*.ttf" -o -iname "*.otf" \) \
             -exec cp -n {} /usr/local/share/fonts/fira/ \;
           sudo fc-cache -f
-          echo "Font files now in /usr/local/share/fonts/fira:"
-          sudo find /usr/local/share/fonts/fira -maxdepth 1 -type f -printf '%f\n' \
-            | sort | sed -n '1,200p'
-          echo "fc-match results:"
           fc-match "Fira Sans" || true
-          fc-match -s "Fira Sans" | sed -n '1,10p' || true
           fc-match "Fira Code" || true
-          fc-match -s "Fira Code" | sed -n '1,10p' || true
-          echo "fc-list grep fira:"
-          fc-list | grep -i "fira" | sort | sed -n '1,200p' || true
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
@@ -63,24 +50,21 @@ jobs:
         run: |
           set -euxo pipefail
           typst --version
-          typst fonts | sed -n '1,120p' > typst-fonts.txt
-          echo "Typst fonts (first 120 lines):"
-          sed -n '1,120p' typst-fonts.txt
-          echo "Fira entries from Typst:"
-          grep -i '^fira' typst-fonts.txt || true
-          # Hard fail if Typst does not list Fira at all
+          typst fonts | sed -n '1,200p' > typst-fonts.txt
           grep -Eiq '^fira (sans|code)' typst-fonts.txt || \
             (echo "Typst cannot see Fira fonts" && exit 1)
 
-      - name: Create tiny font test (diagnostic)
+      - name: Create tiny font test (fixed)
         run: |
           set -euxo pipefail
           cat > font-test.typ <<'EOF'
           #set page(width: 400pt, height: 200pt)
           #set text(size: 16pt)
+          #set text(font: "Fira Sans")
           = Fira check
-          [Fira Sans] #set text(font: "Fira Sans")[The quick brown fox]
-          [Fira Code] #set text(font: "Fira Code")[let x = 42]
+          The quick brown fox
+          #set text(font: "Fira Code")
+          let x = 42
           EOF
           typst compile font-test.typ font-test.pdf
           pdfinfo font-test.pdf || true
@@ -88,7 +72,6 @@ jobs:
       - name: Compile CV
         run: |
           set -euxo pipefail
-          ls -la
           test -f english.typ
           typst compile english.typ english.pdf
           pdfinfo english.pdf || true
@@ -99,7 +82,6 @@ jobs:
         with:
           name: debug-${{ github.run_number }}
           path: |
-            env.txt
             typst-fonts.txt
             font-test.typ
             font-test.pdf
