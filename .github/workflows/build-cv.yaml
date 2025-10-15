@@ -30,6 +30,7 @@ jobs:
       - uses: lvignoli/typst-action@main
         with:
           source_file: english.typ
+          options: --font-path ./.fonts/noto --font-path ./.fonts/dejavu --font-path ./.fonts/firacode
         env:
           TYPST_FONT_PATHS: ./.fonts/noto:./.fonts/dejavu:./.fonts/firacode
       - name: Upload PDF file
