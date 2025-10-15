@@ -19,7 +19,7 @@ jobs:
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            fonts-firacode fonts-dejavu poppler-utils unzip
+            fonts-firacode fonts-dejavu poppler-utils unzip fontconfig
           sudo fc-cache -f
 
       - name: Install Fira Sans (upstream)
@@ -34,12 +34,16 @@ jobs:
           sudo find /tmp/fira -type f -iregex ".*Fira.*\\.(ttf|otf)$" \
             -exec cp -n {} /usr/share/fonts/truetype/fira/ \;
           sudo fc-cache -f
+          fc-list | grep -qi "Fira Sans" || {
+            echo "Fira Sans not found in system cache"; exit 1; }
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
 
-      - name: Debug font discovery
-        run: typst fonts | grep -Ei "fira|dejavu" || true
+      - name: Verify font discovery
+        run: |
+          typst fonts | grep -Eiq "^fira (sans|code)" || {
+            echo "Typst cannot see Fira fonts"; exit 1; }
 
       - name: Compile CV
         run: typst compile english.typ english.pdf
@@ -51,7 +55,7 @@ jobs:
           path: english.pdf
           if-no-files-found: error
 
-      - name: Generate thumbnail (for push to main only)
+      - name: Generate thumbnail (push to main only)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
 
