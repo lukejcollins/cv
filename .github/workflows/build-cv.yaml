@@ -23,7 +23,12 @@ jobs:
           mkdir -p _fira
           unzip -q FiraSans.zip -d _fira
           # Copy both TTF and OTF variants of Fira Sans
-          find _fira -type f -iregex ".*FiraSans.*\\.(ttf|otf)$" -exec cp -n {} .fonts/ \;
+          echo "Listing extracted Fira archive contents (sample):"
+          find _fira -maxdepth 3 -type f | head -n 50 || true
+          # Copy both TTF and OTF variants of Fira (Sans/Code/etc.)
+          find _fira -type f -iregex ".*Fira.*\\.(ttf|otf)$" -exec cp -n {} .fonts/ \;
+          echo "Vendored Fira* files (sample):"
+          ls -1 .fonts | grep -i "fira" | head -n 50 || true
           # Add DejaVu fallbacks
           cp -n /usr/share/fonts/truetype/dejavu/*.ttf .fonts/ 2>/dev/null || true
           cp -n /usr/share/fonts/truetype/dejavu/*.otf .fonts/ 2>/dev/null || true
@@ -36,8 +41,9 @@ jobs:
         uses: docker://ghcr.io/typst/typst:latest
         env:
           TYPST_FONT_PATHS: /github/workspace/.fonts:./.fonts
+          TYPST_FONT_PATH: /github/workspace/.fonts
         with:
-          args: fonts
+          args: fonts --ignore-system-fonts --font-path /github/workspace/.fonts
       - uses: lvignoli/typst-action@main
         with:
           source_file: |
