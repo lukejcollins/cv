@@ -20,17 +20,18 @@ jobs:
             fonts-dejavu \
             poppler-utils
           # Copy fonts into workspace so container action can see them
+          # Vendor font files directly into a flat directory Typst can scan
           mkdir -p .fonts
-          cp -r /usr/share/fonts/truetype/noto .fonts/ 2>/dev/null || true
-          cp -r /usr/share/fonts/opentype/noto .fonts/ 2>/dev/null || true
-          cp -r /usr/share/fonts/truetype/dejavu .fonts/ 2>/dev/null || true
-          cp -r /usr/share/fonts/truetype/firacode .fonts/ 2>/dev/null || true
+          find /usr/share/fonts -type f \( -iname "*.ttf" -o -iname "*.otf" \) -exec cp -n {} .fonts/ \; || true
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: lvignoli/typst-action@main
         with:
-          source_file: english.typ
-          args: --font-path ./.fonts
+          source_file: |
+            english.typ
+          options: |
+            --font-path
+            ./.fonts
         env:
           TYPST_FONT_PATH: ./.fonts
       - name: Upload PDF file
