@@ -9,7 +9,7 @@
 
 #let contact_info(services) = {
   let glyph(icon) = {
-    box(baseline: 2.5pt, height: 11pt, text(icon, size: 10pt))
+    box(baseline: 2.5pt, height: 11pt, text(font: sans_serif_font, fallback: true, icon, size: 10pt))
     h(3pt)
   }
 
@@ -75,7 +75,7 @@
         set align(right + bottom)
         set text(right_text_font_size, weight: "light")
 
-        period; h(3pt); text(size: 10pt, fill: secondary_color, "📅")
+        period; h(3pt); text(size: 10pt, "📅")
       },
       {
         v(row_spacing)
@@ -86,7 +86,7 @@
         set align(right)
 
         v(row_spacing)
-        location; h(3pt); text(size: 10pt, fill: secondary_color, "📍")
+        location; h(3pt); text(size: 10pt, "📍")
       },
     )
   )
@@ -111,7 +111,7 @@
 
 // Produces the LaTeX symbol
 #let LaTeX = context {
-  set text(font: "Times New Roman") // TODO: look up actual name
+  set text(font: "DejaVu Serif")
   let l = measure(text(1em, "L"))
   let a = measure(text(0.7em, "A"))
   let A = text(0.7em, baseline: a.height - l.height, "A")
@@ -192,7 +192,7 @@
   right_column: [],
   footer_content: []
 ) = {
-  set text(9.8pt, font: sans_serif_font)
+  set text(9.8pt, font: sans_serif_font, fallback: true)
   set page(margin: (x: 32pt, y: 35pt), footer: footer(footer_content))
   set par(justify: true)
 

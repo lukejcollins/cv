@@ -3,40 +3,59 @@ on:
   push:
     branches: [main]
   pull_request:
+
 jobs:
   build_typst_pdf:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - name: Install fonts
-        env:
-          GH_TOKEN: ${{ github.token }} # Required by gh in GitHub Actions
-        run: |
-          # Install required fonts and pdftoppm
-          sudo apt-get update
-          sudo apt-get install fonts-firacode poppler-utils --fix-missing
-          # Fira Sans doesn't exist in the Ubuntu repos
-          gh release download --repo mozilla/Fira --archive zip --output FiraSans.zip
-          # FontAwesome is missing one glyph for some reason when installed with apt-get
-          gh release download --repo FortAwesome/Font-Awesome --archive zip --output FontAwesome.zip
-          unzip FontAwesome.zip -d /usr/share/fonts/font_awesome/
-          unzip FiraSans.zip -d /usr/share/fonts/fira_sans/
-          fc-cache -fv
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      - uses: lvignoli/typst-action@main
+
+      - name: Install tools and fonts
+        run: |
+          set -euxo pipefail
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends \
+            git fontconfig unzip poppler-utils \
+            fonts-firacode fonts-dejavu
+          git clone --depth=1 https://github.com/bBoxType/FiraSans.git /tmp/FiraSans
+          sudo mkdir -p /usr/local/share/fonts/fira
+          sudo find /tmp/FiraSans -type f \
+            \( -iname "*.ttf" -o -iname "*.otf" \) \
+            -exec cp -n {} /usr/local/share/fonts/fira/ \;
+          sudo fc-cache -f
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v4
+
+      - name: Compile CV
+        run: |
+          set -euxo pipefail
+          typst compile english.typ english.pdf
+
+      - name: Upload PDF (PR or push)
+        uses: actions/upload-artifact@v4
         with:
-          source_file: english.typ
-      - name: Upload PDF file
+          name: English-PDF-${{ github.event_name }}-${{ github.run_number }}
+          path: english.pdf
+          if-no-files-found: error
+
+      - name: Generate thumbnail (push to main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
+
+      - name: Upload thumbnail (push to main only)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
-          name: English PDF
-          path: |
-            english.pdf
-      - name: Generate thumbnails
-        run: |
-          pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
-      - name: Publish release
+          name: English-Thumbnail-${{ github.run_number }}
+          path: english-thumbnail.png
+          if-no-files-found: error
+
+      - name: Publish release (push to main only)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
