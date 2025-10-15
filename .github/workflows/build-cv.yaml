@@ -3,66 +3,67 @@ on:
   push:
     branches: [main]
   pull_request:
+
 jobs:
   build_typst_pdf:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - name: Install fonts
-        env:
-          GH_TOKEN: ${{ github.token }} # Required by gh in GitHub Actions
-        run: |
-          # Install required tools and fonts available via apt
-          sudo apt-get update -y
-          sudo apt-get install -y --no-install-recommends fonts-firacode poppler-utils unzip
-          # Vendor fonts into workspace for the containerized Typst action
-          mkdir -p .fonts
-          # Copy Fira Code from system to vendored folder
-          cp -n /usr/share/fonts/truetype/firacode/*.ttf .fonts/ 2>/dev/null || true
-          # Download and vendor Fira Sans from upstream releases
-          gh release download --repo mozilla/Fira --archive zip --output FiraSans.zip
-          mkdir -p _fira
-          unzip -q FiraSans.zip -d _fira
-          # Copy both TTF and OTF variants of Fira Sans
-          echo "Listing extracted Fira archive contents (sample):"
-          find _fira -maxdepth 3 -type f | head -n 50 || true
-          # Copy both TTF and OTF variants of Fira (Sans/Code/etc.)
-          find _fira -type f -iregex ".*Fira.*\\.(ttf|otf)$" -exec cp -n {} .fonts/ \;
-          echo "Vendored Fira* files (sample):"
-          ls -1 .fonts | grep -i "fira" | head -n 50 || true
-          # Add DejaVu fallbacks
-          cp -n /usr/share/fonts/truetype/dejavu/*.ttf .fonts/ 2>/dev/null || true
-          cp -n /usr/share/fonts/truetype/dejavu/*.otf .fonts/ 2>/dev/null || true
-          # Show a few vendored fonts for debugging
-          echo "Vendored fonts (sample):"
-          ls -1 .fonts | grep -Ei "fira|dejavu" | head -n 20 || true
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      - name: Debug Typst font discovery
-        uses: docker://ghcr.io/typst/typst:latest
+
+      - name: Install system fonts
+        run: |
+          set -euxo pipefail
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends \
+            fonts-firacode fonts-dejavu poppler-utils unzip
+          sudo fc-cache -f
+
+      - name: Install Fira Sans (upstream)
         env:
-          TYPST_FONT_PATHS: /github/workspace/.fonts:./.fonts
-          TYPST_FONT_PATH: /github/workspace/.fonts
-        with:
-          args: fonts --ignore-system-fonts --font-path /github/workspace/.fonts
-      - uses: lvignoli/typst-action@main
-        with:
-          source_file: |
-            english.typ
-          options: |
-            --font-path
-            ./.fonts
-        env:
-          TYPST_FONT_PATHS: /github/workspace/.fonts:./.fonts
-      - name: Upload PDF file
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          gh release download --repo mozilla/Fira --archive zip \
+            --output FiraSans.zip
+          sudo mkdir -p /usr/share/fonts/truetype/fira
+          unzip -q FiraSans.zip -d /tmp/fira
+          sudo find /tmp/fira -type f -iregex ".*Fira.*\\.(ttf|otf)$" \
+            -exec cp -n {} /usr/share/fonts/truetype/fira/ \;
+          sudo fc-cache -f
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v4
+
+      - name: Debug font discovery
+        run: typst fonts | grep -Ei "fira|dejavu" || true
+
+      - name: Compile CV
+        run: typst compile english.typ english.pdf
+
+      - name: Upload artifact (PR or push)
         uses: actions/upload-artifact@v4
         with:
-          name: English PDF
-          path: |
-            english.pdf
-      - name: Generate thumbnails
-        run: |
-          pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
-      - name: Publish release
+          name: English-PDF-${{ github.event_name }}-${{ github.run_number }}
+          path: english.pdf
+          if-no-files-found: error
+
+      - name: Generate thumbnail (for push to main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
+
+      - name: Upload thumbnail (push to main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: English-Thumbnail-${{ github.run_number }}
+          path: english-thumbnail.png
+          if-no-files-found: error
+
+      - name: Publish release (push to main only)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
