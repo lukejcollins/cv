@@ -14,41 +14,97 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: System info
+        run: |
+          set -euxo pipefail
+          uname -a
+          lsb_release -a || true
+          printenv | sort | sed -n '1,200p' > env.txt
+          cat env.txt
+
       - name: Install base tools and fonts
         run: |
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            git fontconfig unzip poppler-utils
-          # Optional extras
-          sudo apt-get install -y --no-install-recommends \
-            fonts-firacode fonts-dejavu || true
-          sudo fc-cache -f
+            git fontconfig unzip curl poppler-utils \
+            fonts-firacode fonts-dejavu
+          fc-cache -f
+          fc-list | head -n 50 || true
 
-      - name: Install Fira Sans from source repo
+      - name: Install Fira Sans (clone and copy all TTF/OTF)
         run: |
           set -euxo pipefail
-          git clone --depth=1 https://github.com/bBoxType/FiraSans.git /tmp/FiraSans
+          rm -rf /tmp/FiraSans
+          git clone --depth=1 https://github.com/bBoxType/FiraSans.git \
+            /tmp/FiraSans
           sudo mkdir -p /usr/local/share/fonts/fira
-          sudo find /tmp/FiraSans/Fira_Sans_4_3/Fonts \
-            -type f -iregex '.*FiraSans.*\\.(ttf|otf)$' \
+          sudo find /usr/local/share/fonts/fira -maxdepth 1 -type f -printf '%f\n' \
+            || true
+          sudo find /tmp/FiraSans -type f \
+            \( -iname "*.ttf" -o -iname "*.otf" \) \
             -exec cp -n {} /usr/local/share/fonts/fira/ \;
           sudo fc-cache -f
-          fc-list | grep -i 'fira' | head -n 30 || true
+          echo "Font files now in /usr/local/share/fonts/fira:"
+          sudo find /usr/local/share/fonts/fira -maxdepth 1 -type f -printf '%f\n' \
+            | sort | sed -n '1,200p'
+          echo "fc-match results:"
+          fc-match "Fira Sans" || true
+          fc-match -s "Fira Sans" | sed -n '1,10p' || true
+          fc-match "Fira Code" || true
+          fc-match -s "Fira Code" | sed -n '1,10p' || true
+          echo "fc-list grep fira:"
+          fc-list | grep -i "fira" | sort | sed -n '1,200p' || true
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
 
-      - name: Verify Typst sees Fira
+      - name: Typst version and fonts snapshot
         run: |
           set -euxo pipefail
-          typst fonts | grep -Eiq '^fira (sans|code)' || {
-            echo "Typst cannot see Fira fonts"; exit 1; }
+          typst --version
+          typst fonts | sed -n '1,120p' > typst-fonts.txt
+          echo "Typst fonts (first 120 lines):"
+          sed -n '1,120p' typst-fonts.txt
+          echo "Fira entries from Typst:"
+          grep -i '^fira' typst-fonts.txt || true
+          # Hard fail if Typst does not list Fira at all
+          grep -Eiq '^fira (sans|code)' typst-fonts.txt || \
+            (echo "Typst cannot see Fira fonts" && exit 1)
+
+      - name: Create tiny font test (diagnostic)
+        run: |
+          set -euxo pipefail
+          cat > font-test.typ <<'EOF'
+          #set page(width: 400pt, height: 200pt)
+          #set text(size: 16pt)
+          = Fira check
+          [Fira Sans] #set text(font: "Fira Sans")[The quick brown fox]
+          [Fira Code] #set text(font: "Fira Code")[let x = 42]
+          EOF
+          typst compile font-test.typ font-test.pdf
+          pdfinfo font-test.pdf || true
 
       - name: Compile CV
-        run: typst compile english.typ english.pdf
+        run: |
+          set -euxo pipefail
+          ls -la
+          test -f english.typ
+          typst compile english.typ english.pdf
+          pdfinfo english.pdf || true
 
-      - name: Upload artifact (PR or push)
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-${{ github.run_number }}
+          path: |
+            env.txt
+            typst-fonts.txt
+            font-test.typ
+            font-test.pdf
+
+      - name: Upload PDF (PR or push)
         uses: actions/upload-artifact@v4
         with:
           name: English-PDF-${{ github.event_name }}-${{ github.run_number }}
