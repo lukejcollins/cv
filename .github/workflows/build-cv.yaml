@@ -37,7 +37,7 @@ jobs:
             --font-path
             ./.fonts
         env:
-          TYPST_FONT_PATH: ./.fonts
+          TYPST_FONT_PATHS: /github/workspace/.fonts:./.fonts
       - name: Upload PDF file
         uses: actions/upload-artifact@v4
         with:

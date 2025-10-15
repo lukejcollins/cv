@@ -5,7 +5,7 @@
 #let gray_color = rgb("#7c7c7c") // light gray
 
 #let sans_serif_font = "DejaVu Sans"
-#let code_font = "Fira Code"
+#let code_font = "DejaVu Sans Mono"
 
 #let contact_info(services) = {
   let glyph(icon) = {
@@ -111,7 +111,7 @@
 
 // Produces the LaTeX symbol
 #let LaTeX = context {
-  set text(font: "Times New Roman") // TODO: look up actual name
+  set text(font: "DejaVu Serif")
   let l = measure(text(1em, "L"))
   let a = measure(text(0.7em, "A"))
   let A = text(0.7em, baseline: a.height - l.height, "A")
