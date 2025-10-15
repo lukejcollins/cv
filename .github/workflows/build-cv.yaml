@@ -21,13 +21,13 @@ jobs:
           unzip FiraSans.zip -d /usr/share/fonts/fira_sans/
           fc-cache -fv
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - uses: Jarivanbakel/typst-action@v3
+        uses: actions/checkout@v4
+      - uses: lvignoli/typst-action@main
         with:
           input_files: |
             english.typ
       - name: Upload PDF file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: English PDF
           path: |
@@ -36,7 +36,7 @@ jobs:
         run: |
           pdftoppm english.pdf english-thumbnail -png -singlefile -scale-to 350
       - name: Publish release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             english.pdf
