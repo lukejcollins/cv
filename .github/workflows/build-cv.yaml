@@ -19,22 +19,10 @@ jobs:
           set -euxo pipefail
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-            fonts-firacode fonts-dejavu poppler-utils unzip fontconfig curl
+            fonts-fira-sans fonts-firacode fonts-dejavu \
+            fontconfig poppler-utils unzip
           sudo fc-cache -f
-
-      - name: Install Fira Sans (Google Fonts)
-        run: |
-          set -euxo pipefail
-          sudo mkdir -p /usr/local/share/fonts/fira
-          curl -L \
-            "https://fonts.google.com/download?family=Fira%20Sans" \
-            -o /tmp/FiraSans.zip
-          unzip -q /tmp/FiraSans.zip -d /tmp/fira
-          sudo find /tmp/fira -type f -iname "*.ttf" \
-            -exec cp -n {} /usr/local/share/fonts/fira/ \;
-          sudo fc-cache -f
-          echo "Installed Fira fonts:"
-          fc-list | grep -i "fira" | head -n 20 || true
+          fc-list | grep -Ei "fira|dejavu" | head -n 30 || true
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4
@@ -42,7 +30,7 @@ jobs:
       - name: Verify font discovery
         run: |
           set -euxo pipefail
-          typst fonts | grep -Eiq "^fira( |$)" || {
+          typst fonts | grep -Eiq "^fira (sans|code)" || {
             echo "Typst cannot see Fira fonts"; exit 1; }
 
       - name: Compile CV
