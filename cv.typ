@@ -9,8 +9,7 @@
 
 #let contact_info(services) = {
   let glyph(icon) = {
-    // Render icons with an emoji-capable font explicitly
-    box(baseline: 2.5pt, height: 11pt, text(font: "Noto Color Emoji", fallback: true, icon, size: 10pt))
+    box(baseline: 2.5pt, height: 11pt, text(font: sans_serif_font, fallback: true, icon, size: 10pt))
     h(3pt)
   }
 
@@ -76,7 +75,7 @@
         set align(right + bottom)
         set text(right_text_font_size, weight: "light")
 
-        period; h(3pt); text(size: 10pt, font: "Noto Color Emoji", "📅")
+        period; h(3pt); text(size: 10pt, fill: secondary_color, "•")
       },
       {
         v(row_spacing)
@@ -87,7 +86,7 @@
         set align(right)
 
         v(row_spacing)
-        location; h(3pt); text(size: 10pt, font: "Noto Color Emoji", "📍")
+        location; h(3pt); text(size: 10pt, fill: secondary_color, "•")
       },
     )
   )
@@ -142,7 +141,7 @@
   #show link: body => underline(text(body, fill: secondary_color, weight: "bold"))
 
   #line(length: 100%, stroke: 0.5pt + gray_color)
-  #text(size: 10pt, fill: secondary_color, "›") #content
+  #text(size: 10pt, fill: secondary_color, ">") #content
 ]
 
 #let programming_skills(header, languages_header, other_technologies_header) = {

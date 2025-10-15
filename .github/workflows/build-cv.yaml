@@ -23,6 +23,10 @@ jobs:
           # Vendor font files directly into a flat directory Typst can scan
           mkdir -p .fonts
           find /usr/share/fonts -type f \( -iname "*.ttf" -o -iname "*.otf" \) -exec cp -n {} .fonts/ \; || true
+      - name: List vendored fonts (debug)
+        run: |
+          echo "Vendored fonts count: $(ls -1 .fonts | wc -l)"
+          ls -1 .fonts | head -n 20 || true
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: lvignoli/typst-action@main

@@ -4,11 +4,11 @@
 #cv(
   name: "Luke Collins",
   links: (
-    (link: "mailto:luke@lukecollins.dev", icon: "✉"),
+    (link: "mailto:luke@lukecollins.dev", icon: "@"),
     (link: "https://github.com/lukejcollins", display: "lukejcollins",
-      icon: "🐙"),
+      icon: "GH"),
     (link: "https://www.linkedin.com/in/luke-j-collins/",
-      display: "Luke Collins", icon: "🔗"),
+      display: "Luke Collins", icon: "IN"),
   ),
   occupation: "Resilience Engineer",
   tagline: [Solving problems for IT teams. Check out my Github
