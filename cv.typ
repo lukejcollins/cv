@@ -1,4 +1,4 @@
-#import "@preview/fontawesome:0.1.0": *
+// Removed Font Awesome package due to compatibility issues
 
 #let primary_color = rgb("#2b4277") // darker blue
 #let secondary_color = rgb("#677fb2") // lighter blue
@@ -75,7 +75,7 @@
         set align(right + bottom)
         set text(right_text_font_size, weight: "light")
 
-        period; h(3pt); text(fill: secondary_color, fa-calendar(10pt))
+        period; h(3pt); text(size: 10pt, fill: secondary_color, "📅")
       },
       {
         v(row_spacing)
@@ -86,7 +86,7 @@
         set align(right)
 
         v(row_spacing)
-        location; h(3pt); text(fill: secondary_color, fa-location-dot(10pt))
+        location; h(3pt); text(size: 10pt, fill: secondary_color, "📍")
       },
     )
   )
@@ -110,15 +110,15 @@
 }
 
 // Produces the LaTeX symbol
-#let LaTeX = style(styles => {
+#let LaTeX = context {
   set text(font: "Times New Roman") // TODO: look up actual name
-  let l = measure(text(1em, "L"), styles)
-  let a = measure(text(0.7em, "A"), styles)
+  let l = measure(text(1em, "L"))
+  let a = measure(text(0.7em, "A"))
   let A = text(0.7em, baseline: a.height - l.height, "A")
-  let e = measure(text(1em, "E"), styles)
+  let e = measure(text(1em, "E"))
   let E = text(1em, baseline: e.height / 4, "E")
   box("L" + h(-0.3em) + A + h(-0.1em) + "T" + h(-0.1em) + E + h(-0.125em) + "X")
-})
+}
 
 #let bubble(content) = {
   box(
@@ -141,7 +141,7 @@
   #show link: body => underline(text(body, fill: secondary_color, weight: "bold"))
 
   #line(length: 100%, stroke: 0.5pt + gray_color)
-  #fa-chevron-right() #content
+  #text(size: 10pt, fill: secondary_color, "›") #content
 ]
 
 #let programming_skills(header, languages_header, other_technologies_header) = {
@@ -149,35 +149,35 @@
 
   [=== #languages_header]
 
-  skill("Linux", 4)
-  skill("Emacs", 4)
-  skill("Git", 4)
-  skill("Atlassian/Jira", 5)
-  skill("Terraform", 3)
-  skill("Github Actions", 4)
   skill("Active Directory", 3)
-  skill("Windows", 3)
   skill("AWS", 3)
+  skill("Atlassian/Jira", 4)
+  skill("Azure", 3)
   skill("Docker", 4)
   skill("GCP", 2)
+  skill("Git", 4)
+  skill("Github Actions", 4)
+  skill("Linux", 4)
   skill("MacOS", 3)
-  skill("Microsoft Entra", 2)
+  skill("Microsoft Entra", 3)
+  skill("Terraform", 3)
+  skill("Windows", 3)
 
   [=== #other_technologies_header]
 
-  skill("Python", 3)
-  skill("Powershell", 3)
-  skill("Elisp", 2)
-  skill("Javascript", 1)
-  skill("Rust", 1)
-  skill("Selenium", 3)
-  skill("SQL", 2)
-  skill("HTML/CSS", 2)
-  skill("Scala", 1)
   skill("C++", 1)
+  skill("Elisp", 2)
+  skill("HTML/CSS", 2)
   skill("Java", 1)
-  skill("Typst", 2)
+  skill("Javascript", 1)
+  skill("Playwright", 3)
+  skill("PowerShell", 3)
+  skill("Python", 3)
+  skill("Rust", 1)
+  skill("Scala", 1)
   skill("Shell", 3)
+  skill("SQL", 2)
+  skill("Typst", 2)
 }
 
 #let cv(
@@ -192,7 +192,7 @@
   right_column: [],
   footer_content: []
 ) = {
-  set text(9.8pt, font: "IBM Plex Sans")
+  set text(9.8pt, font: sans_serif_font)
   set page(margin: (x: 32pt, y: 35pt), footer: footer(footer_content))
   set par(justify: true)
 
