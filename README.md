@@ -23,7 +23,7 @@ The PDF (and the thumbnail) is automatically built and deployed on each push usi
 
 ## Compile it yourself
 
-Requires [Typst](https://github.com/typst/typst) to be installed, as well as the fonts [Fira Sans](https://github.com/mozilla/Fira), [Fira Code](https://github.com/tonsky/FiraCode) and [Font Awesome](https://github.com/FortAwesome/Font-Awesome).
+Requires [Typst](https://github.com/typst/typst) to be installed. The template now uses Ubuntu-friendly system fonts (`Liberation` with `DejaVu` fallbacks) so the GitHub Actions build does not need extra font setup.
 
 ```sh
 git clone https://github.com/lukejcollins/cv.git
