@@ -153,9 +153,9 @@
   skill("AWS", 3)
   skill("Atlassian/Jira", 4)
   skill("Azure", 3)
-  skill("Docker", 4)
+  skill("Google Workspace", 3)
   skill("GCP", 2)
-  skill("Git", 4)
+  skill("Grafana", 3)
   skill("Github Actions", 4)
   skill("Linux", 4)
   skill("MacOS", 3)
@@ -174,10 +174,8 @@
   skill("PowerShell", 3)
   skill("Python", 3)
   skill("Rust", 1)
-  skill("Scala", 1)
   skill("Shell", 3)
   skill("SQL", 2)
-  skill("Typst", 2)
 }
 
 #let cv(

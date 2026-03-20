@@ -16,37 +16,39 @@
   left_column: [
     == Work Experience
 
-    #experience("images/britishredcross.jpg")[Resilience Engineer][British Red Cross][2024-09 --- present][WFH]
+    #experience("images/britishredcross.jpg")[Resilience Engineer][British Red Cross][2024 --- present][WFH]
 
-    I improve reliability and observability across Azure and third-party
-    systems. I build end-to-end visibility with health, log, and synthetic
-    monitoring to surface risks early and cut incident impact.
+    I design and operate internal tooling that helps teams improve reliability
+    and observability across Azure and third-party systems. I build end-to-end
+    visibility with health, log, and synthetic monitoring to surface risks
+    early and reduce incident impact and response times.
 
-    I design lightweight checks and automation that validate resilience in
-    complex environments. I help set standards and frameworks so teams share
-    clear signals, detect faults faster, and run more stable services.
+    I develop lightweight checks and automation that validate resilience in
+    complex environments. I establish standards and frameworks so teams share
+    clear signals, detect faults faster, and resolve issues faster and more reliably.
 
-    I partner with stakeholders to map critical user journeys and define
-    SLOs, aligning monitoring and alerting to outcomes.
+    I work with stakeholders to map critical user journeys and define
+    SLOs, aligning monitoring and alerting with business outcomes.
 
-    #experience("images/ovoenergy.png")[Senior Solutions Engineer][OVO Energy][2022 --- 2024-09][Bristol, UK]
+    #experience("images/ovoenergy.png")[Senior Solutions Engineer][OVO Energy][2022 --- 2024][Bristol, UK]
 
-    I led the design and delivery of scalable, resilient systems that raised
-    performance and reliability for core platforms. I focused on automation
-    and integration to reduce operational risk while supporting growth.
+    I led the design and delivery of scalable, resilient solutions within the
+    Enterprise Technology function, improving reliability for core platforms
+    used by internal teams. I focused on automation to reduce operational risk
+    and support team efficiency.
 
-    I worked with engineering and operations to ship practical solutions that
-    strengthened stability and streamlined delivery. The result was more
-    consistent and dependable service outcomes.
+    I worked with engineering and IT support teams to deliver practical
+    solutions that improved stability and streamlined workflows, reducing
+    operational overhead.
 
     #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2021 --- 2022][Bristol, UK]
 
-    I advanced IT processes by streamlining operations and improving system
-    reliability. I wrote code, refined deployments, and automated routine
-    workflows to cut manual effort and errors.
+    I improved IT processes within the Enterprise Technology function by
+    streamlining operations and improving system reliability. I built
+    automation to reduce manual effort and errors across support workflows.
 
-    Through analysis and optimisation I increased team agility and uptime.
-    This strengthened the stability and efficiency of the environment.
+    Through analysis and optimisation I improved team efficiency and
+    operational reliability.
 
     == Education
 
@@ -61,15 +63,13 @@
     Completed a TEFL Certificate in Phuket, enhancing communication, teaching,
     and adaptability skills in diverse environments.
 
-    #v(14pt)
-
     == Interests
 
     #list_interests((
       "Emacs",
       "Open source",
       "Python",
-      "Tooling",
+      "Learning",
       "Music",
       "Video games",
       "Keyboards",
@@ -81,14 +81,14 @@
   ],
   right_column_header: "Skills",
   languages_header: "Platforms",
-  other_technologies_header: "Languages",
+  other_technologies_header: "Languages & Frameworks",
   right_column: [
     === Methodologies
 
     #skill("Architecture", 4)
-    #skill("Agile", 4)
+    #skill("Process Automation", 4)
     #skill("DevOps", 3)
-    #skill("Solutions", 5)
+    #skill("Reliability", 4)
 
     == Spoken Languages
 
@@ -104,6 +104,8 @@
       "AWS Solutions Architect Professional")
     - #link("https://www.credly.com/badges/604c2a30-8ea2-4327-8eb0-1b2a888793f6/public_url",
       "AWS SysOps Administrator Associate")
+    - #link("https://www.credly.com/badges/6a0580b0-bb06-45fd-b60f-f831a75fa24c/public_url",
+      "AWS Developer Associate")
   ],
   footer_content: [My CV is open-source. Its source code is available at
     #link("https://github.com/lukejcollins/cv").]
