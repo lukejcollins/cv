@@ -1,106 +1,75 @@
-// Removed Font Awesome package due to compatibility issues
+// Minimal monochrome theme for a single-page CV.
 
-#let primary_color = rgb("#2b4277") // darker blue
-#let secondary_color = rgb("#677fb2") // lighter blue
-#let gray_color = rgb("#7c7c7c") // light gray
+#let primary_color = rgb("#111111")
+#let secondary_color = rgb("#3f3f3f")
+#let gray_color = rgb("#6a6a6a")
+#let border_color = rgb("#b9b9b9")
 
-#let sans_serif_font = "Fira Sans"
-#let code_font = "Fira Code"
+#let sans_serif_font = "DejaVu Sans"
+#let serif_font = "DejaVu Serif"
 
 #let contact_info(services) = {
-  let glyph(icon) = {
-    box(baseline: 2.5pt, height: 11pt, text(font: sans_serif_font, fallback: true, icon, size: 10pt))
-    h(3pt)
-  }
-
-  set text(weight: "bold", font: code_font, fill: primary_color, size: 8pt)
+  set text(weight: "regular", font: sans_serif_font, fill: secondary_color, size: 8pt)
 
   services.map(service => {
-    glyph(service.icon)
-
     if "display" in service.keys() {
       link(service.link, service.display)
     } else {
       link(service.link)
     }
-  }).join(h(10pt))
+  }).join([ #text(fill: gray_color, " / ") ])
 }
 
-#let header_info(name, links, occupation, tagline, image_path) = {
+#let header_info(name, links, occupation, tagline) = {
   set text(font: sans_serif_font)
   let date = text(size: 8pt, weight: "regular", fill: gray_color, datetime.today().display())
-  grid(
-    columns: (6fr, 1fr),
-    gutter: 15pt,
-    align(start + horizon, {
-      [= #name]
-      v(2pt)
-      {
-        show link: body => text(body, fill: primary_color)
-        occupation; [ -- ]; text(style: "italic", tagline)
-        // occupation; text(style: "italic", fill: gray_color, {[ -- ]; tagline})
-      }
-
-      v(-5pt)
-      date // TODO: try moving date to contact_info
-
-      v(0pt)
-      contact_info(links)
-    }),
-    align(end + horizon, image(image_path, height: 8%))
-  )
+  [
+    #set text(font: serif_font)
+    = #name
+    #v(2pt)
+    #set text(font: sans_serif_font)
+    #set par(justify: false)
+    #show link: body => text(body, fill: primary_color)
+    #text(weight: "medium", occupation)
+    #text(fill: gray_color, " / ")
+    #text(style: "italic", fill: secondary_color, tagline)
+    #v(5pt)
+    #contact_info(links)
+    #v(3pt)
+    #date
+  ]
 }
 
-#let experience(image_path, name, company_name, period, location) = {
-  set table( inset: 0pt, stroke: none)
-  set align(horizon)
+#let experience(name, company_name, period, location) = {
   set text(font: sans_serif_font)
-  let row_spacing = 4pt
-  let right_text_font_size = 9pt
-
-  v(5pt)
-
-  table(
-    columns: (20pt, 1fr),
-    column-gutter: 5pt,
-    image(image_path),
-    table(
-      columns: (1fr, auto),
-      {
-        set par(justify: false)
-
-        text(weight: "bold", name)
-      },
-      {
-        set align(right + bottom)
-        set text(right_text_font_size, weight: "light")
-
-        period; h(3pt); text(size: 10pt, "📅")
-      },
-      {
-        v(row_spacing)
-        text(style: "italic", company_name)
-      },
-      {
-        set text(right_text_font_size, weight: "light")
-        set align(right)
-
-        v(row_spacing)
-        location; h(3pt); text(size: 10pt, "📍")
-      },
-    )
+  v(6pt)
+  grid(
+    columns: (1fr, auto),
+    column-gutter: 9pt,
+    {
+      set par(justify: false)
+      text(weight: "bold", name)
+      v(2pt)
+      text(style: "italic", fill: secondary_color, company_name)
+    },
+    {
+      set align(right + top)
+      set text(size: 8.2pt, fill: gray_color)
+      period
+      linebreak()
+      location
+    },
   )
-
-  v(-5pt)
+  v(3pt)
 }
 
 #let skill(name, rating) = {
   let max_rating = 5
 
   let circles = range(0, max_rating).map(i => {
-    let color = secondary_color
+    let color = primary_color
     if i >= rating {
-      color = rgb("#c0c0c0") // gray
+      color = border_color
     }
 
     box(circle(radius: 4pt, fill: color))
@@ -122,10 +91,10 @@
 
 #let bubble(content) = {
   box(
-    fill: secondary_color,
-    inset: 4pt,
-    radius: 6pt,
-    text(weight: "semibold", fill: white, font: sans_serif_font , content)
+    stroke: 0.7pt + border_color,
+    inset: (x: 6pt, y: 2.5pt),
+    radius: 20pt,
+    text(size: 7.8pt, weight: "medium", fill: secondary_color, font: sans_serif_font, content)
   )
 }
 
@@ -136,12 +105,12 @@
 
 #let footer(content) = [
   #set align(center)
-  #set text(6.5pt, fill: gray_color, font: code_font)
+  #set text(6.5pt, fill: gray_color, font: sans_serif_font)
 
   #show link: body => underline(text(body, fill: secondary_color, weight: "bold"))
 
   #line(length: 100%, stroke: 0.5pt + gray_color)
-  #text(size: 10pt, fill: secondary_color, "›") #content
+  #content
 ]
 
 #let programming_skills(header, languages_header, other_technologies_header) = {
@@ -190,26 +159,30 @@
   right_column: [],
   footer_content: []
 ) = {
-  set text(9.8pt, font: sans_serif_font, fallback: true)
-  set page(margin: (x: 32pt, y: 35pt), footer: footer(footer_content))
+  set text(9pt, font: sans_serif_font, fallback: true)
+  set page(
+    margin: (left: 22pt, right: 22pt, top: 27pt, bottom: 35pt),
+    footer: footer(footer_content),
+  )
   set par(justify: true)
+  set par(leading: 0.56em)
 
-  show heading.where(level: 2): it => text(fill: primary_color, [
+  show heading.where(level: 2): it => text(font: serif_font, fill: primary_color, [
     #v(5pt)
     #{it.body}
-    #v(-7pt)
-    #line(length: 100%, stroke: 1pt + primary_color)
+    #v(-6pt)
+    #line(length: 100%, stroke: 0.8pt + primary_color)
   ])
-  show heading.where(level: 4): it => text(fill: primary_color, it.body)
-  show heading: it => text(font: sans_serif_font, it)
+  show heading.where(level: 4): it => text(font: serif_font, fill: primary_color, it.body)
+  show heading: it => text(font: serif_font, it)
 
-  header_info(name, links, occupation, tagline, "images/me.jpeg")
+  header_info(name, links, occupation, tagline)
 
-  v(-8pt)
+  v(-2pt)
 
   grid(
-    columns: (1fr, 0.54fr),
-    gutter: 15pt,
+    columns: (1.3fr, 0.7fr),
+    gutter: 16pt,
     left_column,
     {
       show link: body => underline(text(body, fill: primary_color))

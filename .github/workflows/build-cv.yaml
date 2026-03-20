@@ -14,19 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install tools and fonts
+      - name: Install tools
         run: |
           set -euxo pipefail
           sudo apt-get update -y
-          sudo apt-get install -y --no-install-recommends \
-            git fontconfig unzip poppler-utils \
-            fonts-firacode fonts-dejavu
-          git clone --depth=1 https://github.com/bBoxType/FiraSans.git /tmp/FiraSans
-          sudo mkdir -p /usr/local/share/fonts/fira
-          sudo find /tmp/FiraSans -type f \
-            \( -iname "*.ttf" -o -iname "*.otf" \) \
-            -exec cp -n {} /usr/local/share/fonts/fira/ \;
-          sudo fc-cache -f
+          sudo apt-get install -y --no-install-recommends poppler-utils
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v4

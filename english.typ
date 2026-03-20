@@ -1,22 +1,18 @@
 #import "cv.typ": cv, experience, skill, list_interests
-// Font Awesome removed; using Unicode icons instead
 
 #cv(
   name: "Luke Collins",
   links: (
-    (link: "mailto:luke@lukecollins.dev", icon: "✉"),
-    (link: "https://github.com/lukejcollins", display: "lukejcollins",
-      icon: "🐙"),
-    (link: "https://www.linkedin.com/in/luke-j-collins/",
-      display: "Luke Collins", icon: "🔗"),
+    (link: "mailto:luke@lukecollins.dev"),
+    (link: "https://github.com/lukejcollins", display: "github.com/lukejcollins"),
+    (link: "https://www.linkedin.com/in/luke-j-collins/", display: "linkedin.com/in/luke-j-collins"),
   ),
   occupation: "Resilience Engineer",
-  tagline: [Solving problems for IT teams. Check out my Github
-    #link("https://github.com/lukejcollins/lukejcollins", "here").],
+  tagline: [Resilience, observability, and automation for internal technology.],
   left_column: [
     == Work Experience
 
-    #experience("images/britishredcross.jpg")[Resilience Engineer][British Red Cross][2024 --- present][WFH]
+    #experience[Resilience Engineer][British Red Cross][2024 --- present][Remote]
 
     I design and operate internal tooling that helps teams improve reliability
     and observability across Azure and third-party systems. I build end-to-end
@@ -24,13 +20,12 @@
     early and reduce incident impact and response times.
 
     I develop lightweight checks and automation that validate resilience in
-    complex environments. I establish standards and frameworks so teams share
-    clear signals, detect faults faster, and resolve issues faster and more reliably.
+    complex environments and establish standards so teams detect and resolve issues faster.
 
     I work with stakeholders to map critical user journeys and define
     SLOs, aligning monitoring and alerting with business outcomes.
 
-    #experience("images/ovoenergy.png")[Senior Solutions Engineer][OVO Energy][2022 --- 2024][Bristol, UK]
+    #experience[Senior Solutions Engineer][OVO Energy][2022 --- 2024][Bristol, UK]
 
     I led the design and delivery of scalable, resilient solutions within the
     Enterprise Technology function, improving reliability for core platforms
@@ -41,7 +36,7 @@
     solutions that improved stability and streamlined workflows, reducing
     operational overhead.
 
-    #experience("images/ovoenergy.png")[Process Improvement Specialist][OVO Energy][2021 --- 2022][Bristol, UK]
+    #experience[Process Improvement Specialist][OVO Energy][2021 --- 2022][Bristol, UK]
 
     I improved IT processes within the Enterprise Technology function by
     streamlining operations and improving system reliability. I built
@@ -52,13 +47,12 @@
 
     == Education
 
-    #experience("images/uwe.png")[BA International Relations (First Class Honours)][University of the West of England][2007 --- 2010][Bristol, UK]
+    #experience[BA International Relations (First Class Honours)][University of the West of England][2007 --- 2010][Bristol, UK]
 
-    Earned a degree in International Relations, gaining skills in analysis,
-    negotiation, and cross-cultural communication. This foundation enriches
-    my approach to problem-solving and team collaboration in any setting.
+    Earned a degree in International Relations, building strengths in analysis,
+    negotiation, and cross-cultural communication.
 
-    #experience("images/teflplus.png")[TEFL Certificate][TEFLPlus][2011][Phuket, Thailand]
+    #experience[TEFL Certificate][TEFLPlus][2011][Phuket, Thailand]
 
     Completed a TEFL Certificate in Phuket, enhancing communication, teaching,
     and adaptability skills in diverse environments.
@@ -68,15 +62,15 @@
     #list_interests((
       "Emacs",
       "Open source",
+      "Video games",
       "Python",
       "Learning",
       "Music",
-      "Video games",
       "Keyboards",
       "Board games",
       "Cycling",
-      "Home labbing",
-      "Travelling"
+      "Home lab",
+      "Travel"
     ))
   ],
   right_column_header: "Skills",
